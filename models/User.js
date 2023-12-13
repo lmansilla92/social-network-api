@@ -33,8 +33,20 @@ const userSchema = new Schema(
         ref: 'user'
       }
     ]
+  },
+  // add virtuals to populate during GET method
+  {
+    toJSON: {
+      virtuals: true,
+    },
+    id: false,
   }
-)
+);
+
+// virtual to get the friend count of a specific user using this keyword
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
+})
 
 const User = model('user', userSchema);
 
