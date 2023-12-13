@@ -64,5 +64,29 @@ module.exports = {
     } catch (err) {
       res.status(500).json({ message: 'No user found with that ID to delete'});
     }
+  },
+  // add friend
+  async addFriend(req, res) {
+    console.log(req.params)
+    try {
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $addToSet: { friends: req.params.friendId } },
+        { new: true }
+      );
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: 'No user found with this ID' });
+      }
+
+      console.log('user friends: ', user.friends);
+
+      // respond with new updated user object in json
+      res.json(user);
+    } catch (err) {
+      res.status(500).json({ message: 'No user found with that ID' });
+    }
   }
 };
