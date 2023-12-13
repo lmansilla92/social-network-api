@@ -54,17 +54,16 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // delete user by using _id
+  // delete user by using _id in the req.params
   async deleteUser(req, res) {
-    console.log(req.params);
     try {
       const user = await User.findOneAndDelete({ _id: req.params.userId });
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
       }
-      // delete user's associated thoughts 
+      // delete user's associated thoughts using $in operator
       await Thought.deleteMany({ _id: { $in: user.thoughts } });
-      res.status(200).json({ message: `Deleted '${user.username}' user and thoughts!` });
+      res.status(200).json({ message: `Deleted '${user.username}' user and associated thoughts!` });
     } catch (err) {
       res.status(500).json({ message: 'No user found with that ID to delete'});
     }
