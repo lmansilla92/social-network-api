@@ -14,10 +14,12 @@ const userSchema = new Schema(
         type: String,
         required: true,
         unique: true,
+        // use regex to validate e-mail
         validate: {
             validator: function (email) {
                 return /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(email);
             },
+            // message to display if validation failed
             message: props => `${props.value} is not a valid email!`
         }
     },
@@ -48,6 +50,8 @@ userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 })
 
+// store User model in a const
 const User = model('user', userSchema);
 
+// export User model
 module.exports = User;

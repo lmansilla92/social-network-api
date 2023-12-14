@@ -54,13 +54,15 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // delete user by using _id in the req.params
+   // find user by _id and delete it
   async deleteUser(req, res) {
     try {
+      // delete user by _id by using req.params.userId
       const user = await User.findOneAndDelete({ _id: req.params.userId });
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
       }
+      console.log('user.thoughts', user.thoughts);
       // delete user's associated thoughts using $in operator
       await Thought.deleteMany({ _id: { $in: user.thoughts } });
       res.status(200).json({ message: `Deleted '${user.username}' user and associated thoughts!` });
@@ -70,12 +72,12 @@ module.exports = {
   },
   // add friend
   async addFriend(req, res) {
-    console.log(req.params)
     try {
+      // find user by _id and add friend 
       const user = await User.findOneAndUpdate(
-        { _id: req.params.userId },
-        { $addToSet: { friends: req.params.friendId } },
-        { new: true }
+        { _id: req.params.userId }, // filter to find user by _id
+        { $addToSet: { friends: req.params.friendId } }, // add new friend to friends array using req.params.friendId
+        { new: true } // return updated user object to include new friend
       );
 
       if (!user) {
@@ -83,8 +85,6 @@ module.exports = {
           .status(404)
           .json({ message: 'No user found with this ID' });
       }
-
-      console.log('user friends: ', user.friends);
 
       // respond with new updated user object in json
       res.json(user);
@@ -95,9 +95,12 @@ module.exports = {
   // remove friend
   async removeFriend(req, res) {
     try {
+      // find user by _id using req.params.userId
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
+        // remove friend using req.params.friendId from friends array
         { $pull: { friends: req.params.friendId } },
+        // return new updated user object
         { new: true }
       );
 
@@ -106,7 +109,8 @@ module.exports = {
           .status(404)
           .json({ message: 'No user found with this ID' });
       }
-
+      
+      // respond with updated user object in json
       res.json(user);
     } catch (err) {
       res.status(500).json({ message: 'No user found with that ID' });

@@ -1,6 +1,9 @@
+// import Schema, mode, Types by requiring mongoose
 const { Schema, model, Types } = require('mongoose');
+// import moment to format timestamps
 const moment = require('moment');
 
+// reaction schema
 const reactionSchema = new Schema(
   {
     reactionId: {
@@ -19,6 +22,7 @@ const reactionSchema = new Schema(
     createdAt: {
         type: Date,
         default: Date.now,
+        // user getter to format timestamp using moment
         get: (date) => moment(date).format("MMM DD, YYYY [at] hh:mm a")
     }
   },
@@ -31,6 +35,7 @@ const reactionSchema = new Schema(
   }
 );
 
+// thought schema
 const thoughtSchema = new Schema(
   {
     thoughtText: {
@@ -41,6 +46,7 @@ const thoughtSchema = new Schema(
     createdAt: {
         type: Date,
         default: Date.now,
+        // user getter to format timestamp using moment
         get: (date) => moment(date).format("MMM DD, YYYY [at] hh:mm a")
     },
     username: {
@@ -64,6 +70,8 @@ thoughtSchema.virtual('reactionCount').get(function () {
   return this.reactions.length;
 })
 
+// store Thought model in a const
 const Thought = model('thought', thoughtSchema);
 
+// export Thought model
 module.exports = Thought;
