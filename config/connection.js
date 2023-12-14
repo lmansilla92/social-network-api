@@ -1,4 +1,4 @@
-// connect to database using mongoose
+// destructure connect and connection to connect to database using mongoose
 const { connect, connection } = require('mongoose');
 
 // declare conenction string to connect to database

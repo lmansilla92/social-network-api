@@ -33,10 +33,10 @@ module.exports = {
   // create a new thought
   async createThought(req, res) {
     try {
-        const thought = await Thought.create(req.body); // create new thought
-        // find user by username and update the thought array by adding the thought id using $addToSet
+        const thought = await Thought.create(req.body); // create new thought using req.body
+        // find user by username and update the thought array by adding the new thought id using $addToSet
         const user = await User.findOneAndUpdate(
-            { username: req.body.username }, // filter to find user by username
+            { username: req.body.username }, // filter to find user by username in the req.body
             { $addToSet: { thoughts: thought._id } }, // update the thoughts array by adding the newly created thought by its id
             { new: true } // return new updated object
         );
