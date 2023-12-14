@@ -93,19 +93,20 @@ module.exports = {
   // create reaction
   async createReaction(req, res) {
     try {
-        // find thought by _id and add the reaction in the req.body to the reactions array using $addToSet
-        const thought = await Thought.findOneAndUpdate(
-            { _id: req.params.thoughtId }, // filter to find thought by _id using req.params.thoughtId
-            { $addToSet: { reactions: req.body } }, // add reaction in req.body to the reactions array 
-            { new: true } // return new updated thought object
-        );
-        // If no thought was found respond with 404 and json message
-        if (!thought) {
-            res.status(404).json({ message: 'No thought found with this ID'});
-        };
-        
-        // respond with the new thought object in json
-        res.json(thought);
+            // find thought by _id and add the reaction in the req.body to the reactions array using $addToSet
+            const thought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId }, // filter to find thought by _id using req.params.thoughtId
+                { $addToSet: { reactions: req.body } }, // add reaction in req.body to the reactions array 
+                { new: true } // return new updated thought object
+            );
+            // If no thought was found respond with 404 and json message
+            if (!thought) {
+                res.status(404).json({ message: 'No thought found with this ID'});
+            };
+
+            // respond with the new thought object in json
+            res.json(thought);
+            
     } catch (err) {
         res.status(500).json(err);
     };

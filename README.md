@@ -21,9 +21,11 @@ If you need help on how to clone a GitHub repository into your local repository,
 
 ## Functionality
 
+To start the application, clone the repository into your local and start the application by running 'node server.js' after installing all dependencies using 'npm i' in the integrated terminal.
+
 This is a screen recording showing the functionality of this application:
 
-[Screen Recording Showing Functionality]()
+[Screen Recording Showing Functionality](https://drive.google.com/file/d/1ntPhSORAw4MJobga-PqmnFu1Ifb7-p3z/view)
 
 ## Changes
 
